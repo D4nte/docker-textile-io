@@ -16,8 +16,15 @@ I aim to run [Easy Personal IPFS Pinning Service With Textile](https://medium.co
 1. `git clone git@github.com:D4nte/docker-textile-io.git`
 2. `cd docker-textile-io` 
 3. `docker build . -t textile`
-4. First time: `docker run -it textile`. Be sure to save your mnemonic and seed
-5. Following times: `docker run textile --seed <your seed>`
+
+# Dockerhub
+
+`docker pull royerfranck/textile-io:latest`
+
+# Run
+
+1. First time: `docker run -it textile`. Be sure to save your mnemonic and seed
+2. Following times: `docker run textile --seed <your seed>`
 
 Feel free at anytime to pass arguments.
 These arguments will be used for the `textile init` step.
