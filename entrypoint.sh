@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 function wallet_init() {
+    echo "++ wallet_init";
     output=$(textile wallet init)
     mnemonics=$(echo "${output}" | head -n2 | tail -n1)
     echo "Save this! ${mnemonics}"
@@ -8,29 +9,47 @@ function wallet_init() {
 }
 
 function textile_init() {
-    if [[ -n ${SEED} ]]; then
-        textile init --repo-dir=/textile/ --seed ${SEED}
+    echo "++ textile_init";
+    if [[ -n "${ARGS}" ]]; then
+        textile init --repo-dir=/textile ${ARGS}
     else
-        echo "Internal error: seed not found"
-        exit 1
+        textile init --repo-dir=/textile --seed ${SEED}
     fi
 }
 
 function textile_start() {
+    echo "++ textile_start";
     textile daemon --repo-dir=/textile
 }
 
-case "$1" in
-    --seed)
-        shift;
-        export SEED=$1
-        shift;
-        ;;
-    *)
+function main() {
+    echo "++ main";
+    if [[ -f /textile/textile ]]; then
+        textile_start;
+    elif [[ -n "${SEED}" ]] || [[ -n "${ARGS}" ]] ; then
+        textile_init;
+        textile_start;
+    else
         wallet_init;
-        shift;
-        ;;
-esac
+        textile_init;
+        textile_start;
+    fi
+}
 
-textile_init;
-textile_start;
+ARGS=""
+while [[ -n "$1" ]] ; do
+    case "$1" in
+        --seed)
+            shift;
+            export SEED=$1
+            export ARGS="${ARGS} --seed=${1}"
+            shift;
+            ;;
+        *)
+            export ARGS="${ARGS} $1"
+            shift
+            ;;
+    esac
+done
+
+main;

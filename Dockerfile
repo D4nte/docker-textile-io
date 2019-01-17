@@ -13,8 +13,10 @@ RUN tar xvfz textile-go_${VERSION}_linux-amd64.tar.gz
 RUN rm textile-go_${VERSION}_linux-amd64.tar.gz
 RUN ./install.sh
 
-EXPOSE 40600 5050
+EXPOSE 5050 40600 40601
 
 COPY ./entrypoint.sh /entrypoint.sh
+
+VOLUME /textile
 
 ENTRYPOINT ["/entrypoint.sh"]
