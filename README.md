@@ -14,4 +14,4 @@ Contributions welcome.
 2. `cd docker-textile-io` 
 3. `docker build . -t textile`
 4. First time: `docker run -it textile`. Be sure to save your mnemonic and seed
-5. Following times: `docker run -it textile --seed <your seed>`
+5. Following times: `docker run textile --seed <your seed>`
